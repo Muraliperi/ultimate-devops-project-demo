@@ -3,9 +3,10 @@
 name: product-catalog-ci
 
 on: 
-    pull_request:
+    workflow_dispatch:
+    push:
         branches:
-        - main
+          - '**'
 
 jobs:
     build:
@@ -33,21 +34,20 @@ jobs:
     
     code-quality:
         runs-on: ubuntu-latest
-
         steps:
-        - name: checkout code
+        - name: Checkout code
           uses: actions/checkout@v4
-        
+
         - name: Setup Go 1.22
-          uses: actions/setup-go@v2
+          uses: actions/setup-go@v5
           with:
-           go-version: 1.22
-        
+            go-version: '1.22'
+            cache: false # golangci-lint-action manages its own internal cache
+
         - name: Run golangci-lint
           uses: golangci/golangci-lint-action@v6
           with:
-            version: v1.55.2
-            run: golangci-lint run
+            version: v1.64.5
             working-directory: src/product-catalog
 
     docker:
@@ -94,8 +94,8 @@ jobs:
         
         - name: Commit and push changes
           run: |
-            git config --global user.email "abhishek@gmail.com"
-            git config --global user.name "Abhishek Veeramalla"
+            git config --global user.email "nimmagaddaram2000@gmail.com"
+            git config --global user.name "Abhiram Nimmagadda"
             git add kubernetes/productcatalog/deploy.yaml
             git commit -m "[CI]: Update product catalog image tag"
             git push origin HEAD:main -f
