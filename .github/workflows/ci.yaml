@@ -47,8 +47,7 @@ jobs:
         - name: Run golangci-lint
           uses: golangci/golangci-lint-action@v6
           with:
-            version: v1.55.2
-            args: --path-prefix=src/product-catalog
+            version: v1.64.5
             working-directory: src/product-catalog
 
     docker:
